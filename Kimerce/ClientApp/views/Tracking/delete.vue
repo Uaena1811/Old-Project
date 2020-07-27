@@ -1,0 +1,119 @@
+<template>
+  <div>
+    <h1>Delete</h1>
+
+    <b-list-group>
+      <b-list-group-item>
+        Title : {{Model.title}}
+      </b-list-group-item>
+      <b-list-group-item>
+        Sub Title : {{Model.subtitle}}
+      </b-list-group-item>
+      <b-list-group-item>
+        EntityId : {{Model.entityId}}
+      </b-list-group-item>
+      <b-list-group-item>
+        EntityType : {{Model.noticonfidID}}
+      </b-list-group-item>
+      <b-list-group-item>
+        ActionType : {{Model.actionType}}
+      </b-list-group-item>
+    </b-list-group>
+    <div class="border-top pt-4">
+      <a-form-item>
+        <a-button type="danger" @click="Delete">
+          Delete
+        </a-button>
+      </a-form-item>
+    </div>
+  </div>
+</template>
+
+<script>
+  import axios from 'axios'
+  export default {
+
+    data() {
+      return {
+        Model: {},
+      }
+    },
+
+    created() {
+      var self = this;
+      axios.get('https://localhost:44397/Tracking/GetById/' + this.$route.params.id)
+        .then(function (res) {
+          self.Model = res.data;
+          console.log(res.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+    },
+    methods: {
+      Delete() {
+        axios.delete("https://localhost:44397/Tracking/Delete/" + this.$route.params.id)
+          .then(response => {
+            if (response) this.$router.replace({ path: "/track" });
+          });
+      }
+    }
+  }
+</script>
+<style scoped>
+  img {
+    border: 1px solid #d8d8d8;
+    width: 70%;
+    margin: 40px;
+    box-shadow: 0px .5px 1px #d8d8d8;
+  }
+
+  .product-image {
+    width: 80%;
+  }
+
+  .product-image,
+  .product-info {
+    margin-top: 10px;
+    width: 50%;
+  }
+
+  .product {
+    display: flex;
+    flex-flow: wrap;
+    padding: 1rem;
+  }
+
+  button {
+    margin-top: 30px;
+    border: none;
+    background-color: #1E95EA;
+    color: white;
+    height: 40px;
+    width: 100px;
+    font-size: 14px;
+  }
+
+  .cart {
+    margin-right: 25px;
+    float: right;
+    border: 1px solid #d8d8d8;
+    padding: 5px 20px;
+  }
+
+  .color-box {
+    width: 40px;
+    height: 40px;
+    margin-top: 5px;
+  }
+
+  .disabledButton {
+    background-color: #d8d8d8;
+  }
+
+  .chu {
+    background: #d8d8d8;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+  }
+</style>
